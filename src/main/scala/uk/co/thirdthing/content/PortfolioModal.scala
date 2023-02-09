@@ -10,7 +10,7 @@ import scala.io.Codec
 import com.raquo.laminar.builders.HtmlTag
 import com.raquo.laminar.nodes.ReactiveHtmlElement
 
-object PortfolioModal {
+object PortfolioModal:
 
   def render(idx: Int, item: PortfolioItem) = div(
     cls             := "portfolio-modal modal fade",
@@ -30,23 +30,33 @@ object PortfolioModal {
             div(
               cls := "row justify-content-center",
               div(
-                cls := "col-lg-8",
-                h2(cls := "portfolio-modal-title text-secondary text-uppercase mb-0", item.title),
+                cls := "col-lg-10",
+                img(cls := "img-fluid rounded mb-2", src := item.imageSrc, width := "100px", height := "auto"),
+                h2(cls  := "portfolio-modal-title text-secondary text-uppercase mb-0", item.title),
                 div(
                   cls := "divider-custom",
                   div(cls := "divider-custom-line"),
-                  div(cls := "divider-custom-icon", i(cls := "fas fa-star")),
+                  div(
+                    cls := "divider-custom-icon",
+                    a(
+                      href   := item.githubUrl,
+                      target := "_blank",
+                      alt    := "Link to project on Github",
+                      img(
+                        cls    := "img-fluid",
+                        src    := "github-mark.png",
+                        width  := "50px",
+                        height := "auto"
+                      )
+                    )
+                  ),
                   div(cls := "divider-custom-line")
                 ),
-                img(cls := "img-fluid rounded mb-5", src := item.imageSrc),
-                p(cls   := "mb-4", item.description),
+                buildDescription(item.description),
                 div(
-                  img(
-                    cls    := "img-fluid",
-                    src    := "github-mark.png",
-                    width  := "50px",
-                    height := "auto"
-                  )
+                  cls := "row",
+                  buildItemListing("Libraries/Frameworks", item.librariesAndFrameworks),
+                  buildItemListing("Infrastructure", item.infrastructure)
                 ),
                 button(cls := "btn btn-primary", dataAttr("bs-dismiss") := "modal", i(cls := "fas fa-xmark fa-fw"), "Close window")
               )
@@ -56,4 +66,11 @@ object PortfolioModal {
       )
     )
   )
-}
+
+  private def buildDescription(desc: String) =
+    val elements = List(cls("mb-4")) ++ desc.split("\n").map(p(_))
+    p(elements: _*)
+
+private def buildItemListing(header: String, listing: List[String]) =
+  val elements = List(cls("col-lg-6"), h5(header)) ++ listing.map(div(_))
+  div(elements)

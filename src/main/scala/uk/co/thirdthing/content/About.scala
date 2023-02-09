@@ -10,16 +10,17 @@ import scala.io.Codec
 import com.raquo.laminar.builders.HtmlTag
 import com.raquo.laminar.nodes.ReactiveHtmlElement
 
-object About extends Content[dom.html.Div] {
+object About extends Content[dom.html.Div]:
   override def render = div(
     cls := "row justify-content-center",
     div(
-      cls := "col-lg-6",
+      cls := "col-lg-8 text-center",
       p(
         cls := "lead",
-        "Third Thing Limited is a software engineering consultancy based in London. " +
-          "They specialise in building robust, maintainable and well-documented software solutions, with an emphasis on functional programming"
+        "Third Thing Limited is a software engineering consultancy based in London."),
+      p(
+        cls := "lead",
+          "They specialise in building robust, maintainable and well-documented software solutions, with an emphasis on functional programming."
       )
     )
   )
-}

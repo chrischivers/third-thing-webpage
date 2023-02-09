@@ -21,8 +21,9 @@ lazy val root = (project in file("."))
       "com.github.japgolly.scalacss" %%% "core"                 % "1.0.0",
       "io.monix"                     %%% "newtypes-core"        % "0.2.3",
       "io.monix"                     %%% "newtypes-circe-v0-14" % "0.2.3",
-      "io.circe"                     %%% "circe-core"           % "0.14.3",
-      "io.circe"                     %%% "circe-generic"        % "0.14.3"
+      "io.circe"                     %%% "circe-core"           % "0.14.4",
+      "io.circe"                     %%% "circe-generic"        % "0.14.4",
+      "io.github.cquiroz"            %%% "scala-java-time"      % "2.5.0"
     )
   )
 

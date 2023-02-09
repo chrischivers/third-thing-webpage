@@ -18,11 +18,11 @@ import com.raquo.airstream.ownership.Owner
 import org.scalajs.dom.XMLHttpRequest
 
 object Contact extends Content[dom.html.Div] with Owner:
-  private val stateVar      = Var(ContactFormState.empty)
+  private val stateVar               = Var(ContactFormState.empty)
   private val formSubmissionStateVar = Var(FormSubmissionState.NotSubmitted)
-  private val nameWriter    = stateVar.updater[String]((state, name) => state.copy(name = Some(name)))
-  private val emailWriter   = stateVar.updater[String]((state, email) => state.copy(email = Some(email)))
-  private val messageWriter = stateVar.updater[String]((state, message) => state.copy(message = Some(message)))
+  private val nameWriter             = stateVar.updater[String]((state, name) => state.copy(name = Some(name)))
+  private val emailWriter            = stateVar.updater[String]((state, email) => state.copy(email = Some(email)))
+  private val messageWriter          = stateVar.updater[String]((state, message) => state.copy(message = Some(message)))
   private val formSubmissionObserver = Observer[XMLHttpRequest] { req =>
     if (req.status == 200) formSubmissionStateVar.set(FormSubmissionState.SubmittedSuccessfully)
     else formSubmissionStateVar.set(FormSubmissionState.SubmittedWithError)
@@ -100,24 +100,24 @@ object Contact extends Content[dom.html.Div] with Owner:
       idAttr := "submitButton",
       typ    := "submit",
       "Send",
-        disabled <-- formSubmissionStateVar.signal.map(_ == FormSubmissionState.SubmittedSuccessfully)
+      disabled <-- formSubmissionStateVar.signal.map(_ == FormSubmissionState.SubmittedSuccessfully)
     )
   )
 
   override def render = div(
     cls := "row justify-content-center",
     child <-- formSubmissionStateVar.signal.map {
-        case FormSubmissionState.NotSubmitted => div(cls := "col-lg-8 col-xl-7", formElem)
-        case FormSubmissionState.SubmittedSuccessfully =>
-          div(
-            cls := "col-lg-6",
-            p(cls := "lead", "Thank you. Your message has been submitted")
-          )
-        case FormSubmissionState.SubmittedWithError =>
-          div(
-            cls := "col-lg-6",
-            p(cls := "lead", "There has been an error submitting the form. Please try again.")
-          )
+      case FormSubmissionState.NotSubmitted => div(cls := "col-lg-8 col-xl-7", formElem)
+      case FormSubmissionState.SubmittedSuccessfully =>
+        div(
+          cls := "col-lg-6",
+          p(cls := "lead", "Thank you. Your message has been submitted")
+        )
+      case FormSubmissionState.SubmittedWithError =>
+        div(
+          cls := "col-lg-6",
+          p(cls := "lead", "There has been an error submitting the form. Please try again.")
+        )
 
     }
   )

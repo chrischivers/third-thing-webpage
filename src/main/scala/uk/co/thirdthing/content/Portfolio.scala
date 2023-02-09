@@ -10,13 +10,17 @@ import scala.io.Codec
 import com.raquo.laminar.builders.HtmlTag
 import com.raquo.laminar.nodes.ReactiveHtmlElement
 
-object Portfolio {
+object Portfolio:
 
-  def apply(items: List[PortfolioItem]) = new Content[dom.html.Div] {
+  def apply(items: List[PortfolioItem]) = new Content[dom.html.Div]:
 
     // private def portfolioItem(imageFileName: String, )
     override def render = div(
       cls := "row justify-content-center",
+      div(
+        cls := "text-center",
+        p(cls := "lead", "Listed below are several personal projects / side projects")
+      ),
       items.zipWithIndex.map { case (item, idx) =>
         div(
           cls := "col-md-3 col-lg-2 mb-5",
@@ -27,18 +31,15 @@ object Portfolio {
             div(
               cls := "portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100",
               div(
-                cls := "portfolio-item-caption-content text-center text-white", 
-              i(cls := "fas fa-plus fa-3x"),
-              p(item.title)
+                cls := "portfolio-item-caption-content text-center text-white",
+                p(item.title)
               )
             ),
             img(
-              cls    := "img-fluid",
-              src    := item.imageSrc
+              cls := "img-fluid",
+              src := item.imageSrc
             )
           )
         )
       }
     )
-  }
-}

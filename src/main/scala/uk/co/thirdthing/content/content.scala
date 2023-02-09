@@ -16,10 +16,22 @@ import monix.newtypes.NewtypeWrapped
 import uk.co.thirdthing.content.ValidatedContactForm._
 import io.circe.generic.semiauto.*
 import io.circe.Encoder
+import io.circe.Decoder
 import monix.newtypes.integrations.DerivedCirceCodec
 
-final case class Section(name: String, content: Content[dom.html.Div])
-final case class PortfolioItem(title: String, description: String, imageSrc: String, githubLink: String)
+final case class Section(id: String, title: String, content: Content[dom.html.Div])
+
+final case class PortfolioItem(
+  title: String,
+  description: String,
+  imageSrc: String,
+  githubUrl: String,
+  librariesAndFrameworks: List[String],
+  infrastructure: List[String]
+)
+
+object PortfolioItem:
+  implicit val decoder: Decoder[PortfolioItem] = deriveDecoder
 
 trait Content[T <: dom.html.Element]:
   def render: ReactiveHtmlElement[T]
