@@ -1,10 +1,9 @@
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
-import java.nio.file.Paths
 import scala.jdk.CollectionConverters._
-import scala.util.Try
 
-lazy val start = TaskKey[Unit]("start")
+lazy val startFast = TaskKey[Unit]("startFast")
+lazy val startFull = TaskKey[Unit]("startFull")
 
 lazy val root = (project in file("."))
   .configure(jsCompile)
@@ -27,13 +26,13 @@ lazy val root = (project in file("."))
     )
   )
 
+def build(taskKey: TaskKey[Attributed[org.scalajs.linker.interface.Report]]) = Def.task {
+  (Compile / taskKey).value
+  Files.list((Compile / resourceDirectory).value.toPath()).toList.asScala.map { source =>
+    val destination = (Compile / taskKey / scalaJSLinkerOutputDirectory).value.toPath().resolve(source.getFileName().toString())
+    Files.copy(source, destination, REPLACE_EXISTING)
+  }
+}
+
 lazy val jsCompile: Project => Project =
-  _.settings(start := {
-    (Compile / fastLinkJS).value
-    Files.list((Compile / resourceDirectory).value.toPath()).toList.asScala.map { source =>
-      val destination = (Compile / fastLinkJS / scalaJSLinkerOutputDirectory).value.toPath().resolve(source.getFileName().toString())
-
-      Files.copy(source, destination, REPLACE_EXISTING)
-    }
-
-  })
+  _.settings(startFast := build(fastLinkJS).value, startFull := build(fullLinkJS).value)
