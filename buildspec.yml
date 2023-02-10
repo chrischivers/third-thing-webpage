@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+    commands:
+      - echo "installing sbt"
+      - sudo rm -f /etc/yum.repos.d/bintray-rpm.repo
+      - curl -L https://www.scala-sbt.org/sbt-rpm.repo > sbt-rpm.repo
+      - sudo mv sbt-rpm.repo /etc/yum.repos.d/
+      - sudo yum -y install sbt
+  build:
+    commands:
+      - echo "starting build"
+      - sbt startFull
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - '**/*'
+  base-directory: target/scala-3.2.2/third-thing-landing-page-opt
+  discard-paths: yes
