@@ -34,7 +34,7 @@ object Contact extends Content[dom.html.Div] with Owner:
       validatedState =>
         AjaxEventStream
           .post(
-            url = "https://formkeep.com/f/9230a08de79dsx",
+            url = "https://formkeep.com/f/9230a08de79d",
             data = Ajax.InputData.str2ajax(validatedState.formPayload),
             headers = Map("Accept" -> "application/javascript", "Content-Type" -> "application/x-www-form-urlencoded")
           )
